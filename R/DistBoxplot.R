@@ -1,4 +1,5 @@
-#' @importFrom ggplot2 ggplot aes qplot theme_bw coord_flip ggsave
+#' @importFrom ggplot2 ggplot aes xlab ylab theme_bw coord_flip ggsave geom_boxplot
+#' @importFrom rlang .data
 #' @importFrom reshape2 melt
 #' @importFrom pheatmap pheatmap
 #' @importFrom stats pairwise.wilcox.test
@@ -84,7 +85,9 @@ DistBoxplot<-function(dm, group, dm_name='Dist', group_name='', IndividualID=NUL
     sink(filepath); write.table(Ind_dm_value,quote=FALSE,sep='\t', row.names = FALSE); sink()
 
     #-----Output distance boxplot
-    plot <- qplot(x=GroupPair, y=Dist,  data=Ind_dm_value, geom='boxplot',main='',xlab="Group pair", ylab=paste(dm_name,'_Distance',sep='')) + coord_flip() + theme_bw()
+    plot <- ggplot(Ind_dm_value, aes(x=.data$GroupPair, y=.data$Dist)) + geom_boxplot() +
+                  xlab("Group pair") +
+                  ylab(paste(dm_name, '_Distance', sep='')) + coord_flip() + theme_bw()
     suppressMessages(ggsave(filename=paste(outdir,dm_name,'.',group_name,'.boxplot.ggplot.pdf',sep=''), plot=plot, height=ifelse(nlevels(group)>2,nlevels(group),2)))
 
     invisible(Ind_dm_value)
@@ -104,9 +107,9 @@ DistBoxplot<-function(dm, group, dm_name='Dist', group_name='', IndividualID=NUL
 
     #-----Output distance boxplot
     if(nlevels(group)<30){
-      plot<-qplot(x=GroupPair, y=Dist, data=dm_value, geom='boxplot', position='dodge',
-                  main='', xlab="Group pair", ylab=paste(dm_name,'_Distance',sep='')) +
-        coord_flip() +  theme_bw()
+      plot <- ggplot(dm_value, aes(x=.data$GroupPair, y=.data$Dist)) + geom_boxplot() +
+        xlab("Group pair") +
+        ylab(paste(dm_name, '_Distance', sep='')) + coord_flip() + theme_bw()
       suppressMessages(ggsave(filename=paste(outdir,dm_name,'.',group_name,'.boxplot.ggplot.pdf',sep=''), plot=plot))
       #-----Output statistical results
       p <- stats::pairwise.wilcox.test(dm_value$Dist,factor(dm_value$GroupPair))$p.value

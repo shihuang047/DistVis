@@ -7,16 +7,16 @@
 DistBoxplot(
   dm,
   group,
-  dm_name = "",
+  dm_name = "Dist",
   group_name = "",
   IndividualID = NULL,
-  outpath = "./"
+  outdir = ""
 )
 }
 \arguments{
-\item{dm}{A squared distance matrix}
+\item{dm}{A squared distance matrix or a 'dist' object.}
 
-\item{group}{A metadata variable corresponds to samples in the distance matrix.}
+\item{group}{A factor indicates a metadata variable corresponds to samples in the distance matrix.}
 
 \item{dm_name}{An optional character string for the distance name.}
 
@@ -46,7 +46,7 @@ y0<-factor(c(rep("A", 5), rep("B", 55)))
 require(vegan)
 dm<-vegdist(x, method="bray")
 dm<-data.matrix(dm)
-DistBoxplot(dm, y, dm_name="bray", group="y")
+DistBoxplot(dm, y, dm_name="bray")
 }
 \author{
 Shi Huang
