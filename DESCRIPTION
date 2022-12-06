@@ -15,4 +15,4 @@ Imports:
   pheatmap (>= 1.0.10),
   vegan (>= 2.5.6),
   rlang
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.1

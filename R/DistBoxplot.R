@@ -34,15 +34,15 @@
 #' @export
 DistBoxplot<-function(dm, group, dm_name='Dist', group_name='', IndividualID=NULL, outdir=''){
   # Data check
-  if(class(dm)=="dist")
+  if("dist" %in% class(dm))
     dm <- data.matrix(dm)
   if(ncol(dm)!=nrow(dm) & any(is.na(dm))==TRUE){
     stop('The distance matrix is not squared or contains NA values!')
   }
-  #if(length(unique(group))==1){
-  #  stop('At least two levels in your metadata variable are required.')}
-  #if(length(group)!=nrow(dm))
-  #  stop('The number of rows in metadata and distance matrix are not equal')
+  if(length(unique(group))==1){
+    stop('At least two levels in your metadata variable are required.')}
+  if(length(group)!=nrow(dm))
+    stop('The number of rows in metadata and distance matrix are not equal')
   group<-factor(group)
   if(nlevels(group)>length(group)*0.95){
     stop('The number of levels in a certain category can not exceed 95% of total number of samples')
